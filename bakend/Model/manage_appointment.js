@@ -35,7 +35,7 @@ const Manage_Appointment = sequelizeDb.define("appointment", {
   },
 
   status: {
-    type: Sequelize.ENUM("Aproo"),
+    type: Sequelize.INTEGER,
   },
 
   chr_delete: {

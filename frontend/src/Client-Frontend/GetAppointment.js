@@ -1,61 +1,13 @@
 import React, { useState } from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import CloseIcon from "@mui/icons-material/Close";
 
-import Modal from "@mui/material/Modal";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import { IconButton } from "@mui/material";
+import Link from "@mui/material/Link";
+
+import Typography from "@mui/material/Typography";
+import { createTheme } from "@mui/material/styles";
+
 import { toast } from "react-toastify";
 import axios from "axios";
 
-const MenuModelStyle = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 1050,
-  height: 500,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  overflowY: "auto",
-  p: 1,
-  boxShadow: 24,
-};
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
-const theme = createTheme();
 
 export const GetAppointment = () => {
   const [open, setOpen] = useState(false);
@@ -66,16 +18,11 @@ export const GetAppointment = () => {
   const [slug, setslug] = useState("");
   const [image, setimage] = useState("");
   const [description, setDescription] = useState([]);
-  const [chr_delete, setchr_delete] = useState(0);
-  const [apiData, setapiData] = useState([]);
-  const [updateState, setupdateState] = useState("");
+  const [chr_delete] = useState(0);
   const [update, setupdate] = useState(false);
-  const [menuData, setmenuData] = useState([]);
   const [parentMenu, setparentMenu] = useState(0);
   // const confirm = useConfirm();
 
-  const [deletePage, setDeletePage] = useState({});
-  const [deletePagePopup, setdeletePagePopup] = useState(false);
   // console.log("delete page -->>", deletePage);
 
   const handleSubmit = (event) => {
@@ -110,7 +57,7 @@ export const GetAppointment = () => {
         "http://localhost:5000/admin/allpages",
         formData
       );
-
+      console.log(result);
       toast.success(result.data.message);
       // setOpen(false);
       // apiFunc();

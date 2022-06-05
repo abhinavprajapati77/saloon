@@ -3,8 +3,8 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { Tab, TablePagination, TextField } from "@mui/material";
-import { ToastContainer, toast } from "react-toastify";
+import {  TablePagination, TextField } from "@mui/material";
+import {  toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { Texteditor } from "../../text-edit/texteditor";
@@ -19,7 +19,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-import Tabs from "@mui/material/Tabs";
 
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -34,13 +33,7 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import { useConfirm } from "material-ui-confirm";
 
-import ButtonUnstyled, {
-  buttonUnstyledClasses,
-} from "@mui/base/ButtonUnstyled";
-import { TableComponent } from "../TableComponent";
-import { blue } from "@mui/material/colors";
 
 // import { Button } from "@mui/material";
 
@@ -107,38 +100,6 @@ const columns = [
   { label: "Action", minWidth: 100 },
 ];
 
-const CustomButtonRoot = styled("button")`
-  font-family: IBM Plex Sans, sans-serif;
-  font-weight: bold;
-  font-size: 0.875rem;
-  background-color: ${blue[500]};
-  padding: 12px 24px;
-  border-radius: 8px;
-  color: white;
-  transition: all 150ms ease;
-  cursor: pointer;
-  border: none;
-
-  &:hover {
-    background-color: ${blue[600]};
-  }
-
-  &.${buttonUnstyledClasses.active} {
-    background-color: ${blue[700]};
-  }
-
-  &.${buttonUnstyledClasses.focusVisible} {
-    box-shadow: 0 4px 20px 0 rgba(61, 71, 82, 0.1),
-      0 0 0 5px rgba(0, 127, 255, 0.5);
-    outline: none;
-  }
-
-  &.${buttonUnstyledClasses.disabled} {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-`;
-
 export const Manage_Services = ({ set }) => {
   const [open, setOpen] = useState(false);
   const [updatedItemModal, setupdatedItemModal] = useState(false);
@@ -158,9 +119,6 @@ export const Manage_Services = ({ set }) => {
 
   const [updateState, setupdateState] = useState("");
   const [update, setupdate] = useState(false);
-  const [menuData, setmenuData] = useState([]);
-  const [parentMenu, setparentMenu] = useState(0);
-  const [isEditing, setisEditing] = useState(false);
 
   const [deleteService, setdeleteService] = useState({});
   const [deleteServicePopup, setdeleteServicePopup] = useState(false);
@@ -168,7 +126,6 @@ export const Manage_Services = ({ set }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const confirm = useConfirm();
 
   const apiFunc = async () => {
     try {
@@ -236,13 +193,13 @@ export const Manage_Services = ({ set }) => {
       formData.append("short_description", short_description);
       formData.append("long_description", long_description);
       formData.append("parent_id", parentService);
-      // formData.append(`chr_delete`, chr_delete);
+      formData.append(`chr_delete`, chr_delete);
       const result = await axios.post(
         "http://localhost:5000/admin/allservice",
         formData
       );
 
-      console.log(result);
+      console.log("",result);
 
       toast.success(result.data.message);
       // setOpen(false);
@@ -673,9 +630,8 @@ export const Manage_Services = ({ set }) => {
                 // top: "4rem",
                 height: "28rem",
                 // width: "80.4%",
-                padding: "6rem",
+                padding: "3rem",
                 overflow: "hidden",
-                padding: "3.5rem",
                 // left: "25rem",
               }}
               >

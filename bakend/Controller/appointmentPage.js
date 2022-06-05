@@ -14,6 +14,7 @@ exports.createAppointment = async (req, res, next) => {
     date,
     time,
     remark,
+    chr_delete
   } = req.body;
 
   if (
@@ -59,7 +60,9 @@ exports.createAppointment = async (req, res, next) => {
         date,
         time,
         remark,
+        chr_delete
       });
+      console.log(result_Appointment);
       // --
       let resMessage = "Successfully add Appointment.";
       // --
@@ -86,6 +89,7 @@ exports.allAppointments = async (req, res, next) => {
     const allData = await Manage_Appointment.findAll({
       where: { chr_delete: 0 },
     });
+
 
      res.status(201).json({
       status: true,

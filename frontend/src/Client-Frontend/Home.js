@@ -22,10 +22,11 @@ import "./css/Home.css";
 import Footer from "./Footer";
 // import { NavBar_Frontend } from "./NavBar-Frontend";
 
-const pages = ["Products", "Pricing", "Blog"];
+// const pages = ["Products", "Pricing", "Blog"];
 // const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 export const Home = ({ setIsLoggedIn, setadmin, admin, isLoggedIn }) => {
+  const [allServices, setAllServices] = useState([])
   // const [anchorElNav, setAnchorElNav] = useState(null);
   // const [menuData, setmenuData] = useState([]);
   // const [childMenu, setchildMenu] = useState([]);
@@ -51,12 +52,16 @@ export const Home = ({ setIsLoggedIn, setadmin, admin, isLoggedIn }) => {
   //   // return;
   //   // window.location.reload();
   // };
+  const allServicesHandler = async () => {
+    let allMenu = await axios.get("http://localhost:5000/admin/allservice");
+    setAllServices(allMenu.data.data);
+    return allMenu;
 
-  // useEffect(async () => {
-  //   let allMenu = await axios.get("http://localhost:5000/admin/allmenu");
-  //   setmenuData(allMenu.data.data);
-  //   return allMenu;
-  // }, []);
+  }
+  console.log("---------------------------ddd", allServices);
+  useEffect(() => {
+    allServicesHandler()
+  }, []);
 
   // const handlePopoverOpen = (event) => {
   //   setAnchorElNav(event.currentTarget);
@@ -104,33 +109,17 @@ export const Home = ({ setIsLoggedIn, setadmin, admin, isLoggedIn }) => {
 
         <div className="services_main">
           <div className="services">
-            <div className="service1">
-              <h6>Service 1</h6>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-            </div>
-            <div className="service2">
-              <h6>Service 2</h6>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-            </div>
-            <div className="service3">
-              <h6>Service 3</h6>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-            </div>
-          </div>
+            {allServices.map(curServices => (
+              <div className="service1">
+                <div style={{ display: 'flex', width: '100%', height: "20%" }}>
 
-          <div className="services_again">
-            <div className="service6">
-              <h6>Service 6</h6>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-            </div>
-            <div className="service7">
-              <h6>Service 7</h6>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-            </div>
-            <div className="service8">
-              <h6>Service 8</h6>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-            </div>
+                  <img src={`http://localhost:5000/${curServices.imageUrl}`} alt="" />
+                </div>
+                <h6>{curServices.title}</h6>
+                <h5> {curServices.short_description} </h5>
+              </div>
+            ))
+            }
           </div>
         </div>
 

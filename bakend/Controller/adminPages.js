@@ -5,17 +5,18 @@ const Manage_Service = require("../Model/manage_services");
 // UPDATE navbars m JOIN pages p on m.id=p.id SET m.page_slug=p.title;
 
 exports.adminPages = async (req, res, next) => {
+  console.log("----------------------------------------------------------------------file", req.file);
   const { title, slug, description, chr_delete } = req.body;
-  let image = req.file.originalname;
-  // console.log("======req.file submit", req.file);
-  // console.log("---file", req.file);
 
-
+  let image;
   if (!req.file) {
     return res
       .status(401)
       .json({ status: false, message: "Plz Select the Image!!!" });
   }
+  image = req.file.originalname;
+
+console.log(image);
   if (!title || !slug || !description) {
     return res
       .status(400)
@@ -29,6 +30,7 @@ exports.adminPages = async (req, res, next) => {
       description,
       chr_delete,
     });
+console.log( "))))))))))))))))))))))))",result_menu);
     // --
     let resMessage = "Successfully updated.";
     if (result_menu) {
@@ -53,7 +55,7 @@ exports.adminPages = async (req, res, next) => {
       try {
         const slugUpdateStatus = await Manage_Service.update(
           { page_slug: req.body.slug },
-          { where: { id: req.body.parentService} }  
+          { where: { id: req.body.parentService } }
         );
 
         // console.log("req.body.slug ---->>>", req.body.slug);
@@ -82,8 +84,8 @@ exports.adminPages = async (req, res, next) => {
 
 exports.allPages = async (req, res, next) => {
   try {
-    const allData = await MenuPages.findAll({ where: { chr_delete: 0 } });  
-    console.log(")))))))))))))))))))))))))))))))))))))))))))))",allData);
+    const allData = await MenuPages.findAll({ where: { chr_delete: 0 } });
+    // console.log(")))))))))))))))))))))))))))))))))))))))))))))", allData);
     return res.status(201).json({
       status: true,
       message: "Get ALl Pages Fetched Successfully",
@@ -159,10 +161,10 @@ exports.updatePage = async (req, res) => {
         try {
           const slugUpdateStatus = await Manage_Service.update(
             { page_slug: req.body.slug },
-            { where: { id: req.body.parentService}}
+            { where: { id: req.body.parentService } }
 
           );
-            
+
           if (!slugUpdateStatus) {
             resMessage = "There is some technical issue while updating page.";
           }
@@ -206,7 +208,7 @@ exports.updatePage = async (req, res) => {
         try {
           const slugUpdateStatus = await Manage_Service.update(
             { page_slug: req.body.slug },
-            { where: { id: req.body.parentService}}
+            { where: { id: req.body.parentService } }
           );
 
           if (!slugUpdateStatus) {

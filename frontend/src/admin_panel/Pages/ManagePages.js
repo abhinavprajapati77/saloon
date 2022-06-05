@@ -3,17 +3,16 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { Tab, TablePagination, TextField } from "@mui/material";
-import { ToastContainer, toast } from "react-toastify";
+import {  TablePagination, TextField } from "@mui/material";
+import {  toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import { Texteditor } from "../../text-edit/texteditor";
+// import { Texteditor } from "../../text-edit/texteditor";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
@@ -32,52 +31,51 @@ import InputLabel from "@mui/material/InputLabel";
 // import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import { TextEditor_Manage_page } from "../../text-edit/Text_Editor_Manage_page";
-import Tabs from "@mui/material/Tabs";
 
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
+import { TextEditorManagepage } from "../../text-edit/Text_Editor_Manage_page";
+// import FormLabel from "@mui/material/FormLabel";
 
 // import { Button } from "@mui/material";
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
+// const StyledTableCell = styled(TableCell)(({ theme }) => ({
+//   [`&.${tableCellClasses.head}`]: {
+//     backgroundColor: theme.palette.common.black,
+//     color: theme.palette.common.white,
+//   },
+//   [`&.${tableCellClasses.body}`]: {
+//     fontSize: 14,
+//   },
+// }));
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  // hide last border
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-}));
+// const StyledTableRow = styled(TableRow)(({ theme }) => ({
+//   "&:nth-of-type(odd)": {
+//     backgroundColor: theme.palette.action.hover,
+//   },
+//   // hide last border
+//   "&:last-child td, &:last-child th": {
+//     border: 0,
+//   },
+// }));
 
-const style = {
-  position: "absolute",
-  top: "42.3%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 710,
-  height: 500,
-  marginBottom: "1rem",
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  marginTop: "10rem",
-  overflowY: "auto",
-  p: 1,
-  boxShadow: 24,
-};
+// const style = {
+//   position: "absolute",
+//   top: "42.3%",
+//   left: "50%",
+//   transform: "translate(-50%, -50%)",
+//   width: 710,
+//   height: 500,
+//   marginBottom: "1rem",
+//   bgcolor: "background.paper",
+//   border: "2px solid #000",
+//   marginTop: "10rem",
+//   overflowY: "auto",
+//   p: 1,
+//   boxShadow: 24,
+// };
 const MenuModelStyle = {
   position: "absolute",
   top: "50%",
@@ -94,12 +92,13 @@ const MenuModelStyle = {
 // Title,Slug,Image,Description,Action
 
 const columns = [
-  { label: "Title", minWidth: 100 },
-  { label: "Slug", minWidth: 100 },
-  { label: "Image", minWidth: 100 },
-  { label: "Description", minWidth: 180 },
+  {id: 1, label: "Title", minWidth: 100 },
+  { id: 2, label: "Slug", minWidth: 100 },
+  { id: 3, label: "Image", minWidth: 100 },
+  { id: 4, label: "Description", minWidth: 180 },
   // { label: "Action", minWidth: 100 },
   {
+    id: 5,
     label: "Action",
     minWidth: 170,
     align: "right",
@@ -126,7 +125,7 @@ export const ManagePages = ({ set }) => {
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-console.log(data.length);
+  
   // const confirm = useConfirm();
 
   //radio button selection
@@ -150,23 +149,31 @@ console.log(data.length);
   };
   useEffect(() => {
     apiFunc();
+    allMenuHandler()
+    allServices()
   }, [title, slug, image, description]);
 
-  useEffect(async () => {
+  const allMenuHandler = async () => {
     let allMenu = await axios
       // .get("http://localhost:5000/admin/allmenu")
       .get("http://localhost:5000/admin/allmenu");
     setmenuData(allMenu.data.data);
     return allMenu;
-    // .then((result) => setdata(result.data.allData))
-    // .catch((errror) => console.log(errror));
-  }, []);
+  }
 
-  useEffect(async () => {
+  const allServices = async () => {
     let allservice = await axios.get("http://localhost:5000/admin/allservice");
     setServiceData(allservice.data.data);
     return allservice;
-  }, []);
+  }
+
+  // useEffect(() => {
+  //   // .then((result) => setdata(result.data.allData))
+  //   // .catch((errror) => console.log(errror));
+  // }, [data]);
+
+  // useEffect(() => {
+  // }, []);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
@@ -213,7 +220,7 @@ console.log(data.length);
     e.preventDefault();
     setupdatedItemModal(false);
     setupdate(false);
-    if (!title || !slug || !image || !description) {
+    if (!title || !slug  || !description) {
       toast.error("Plz Fill all the field");
       return;
     }
@@ -228,11 +235,13 @@ console.log(data.length);
       formData.append(`chr_delete`, chr_delete);
       formData.append(`parentMenu`, parentMenu);
       formData.append(`parentService`, parentService);
+      console.log(formData);
+      // const pageData = { title, slug, description, images, chr_delete, parentMenu, parentService  }
       const result = await axios.post(
         "http://localhost:5000/admin/allpages",
         formData
       );
-
+      console.log(result);
       toast.success(result.data.message);
       // setOpen(false);
       setTitle("");
@@ -449,7 +458,7 @@ console.log(data.length);
                       description={description}
                       update={update}
                     /> */}
-                    <TextEditor_Manage_page
+                    <TextEditorManagepage
                       setDescription={setDescription}
                       description={description}
                       update={update}
@@ -492,6 +501,7 @@ console.log(data.length);
                         <Select
                           labelId="demo-simple-select-helper-label"
                           id="demo-simple-select-helper"
+                          name="demo-simple-select-helper"
                           value={parentMenu}
                           label="Select ParentMenu"
                           onChange={(e) => {
@@ -501,8 +511,8 @@ console.log(data.length);
                           <MenuItem value="0">
                             <em>None</em>
                           </MenuItem>
-                          {menuData.map((item) => (
-                            <MenuItem value={item.id} key={item.id}>
+                          {menuData.map((item, indexId) => (
+                            <MenuItem value={item.id} key={indexId}>
                               {item.title}
                             </MenuItem>
                           ))}
@@ -525,7 +535,8 @@ console.log(data.length);
                         </InputLabel>
                         <Select
                           labelId="demo-simple-select-helper-label"
-                          id="demo-simple-select-helper"
+                          id="demo-simple-select-helper1"
+                          name="demo-simple-select-helper1"
                           value={parentService}
                           label="Select Parent Service"
                           onChange={(e) => {
@@ -533,8 +544,8 @@ console.log(data.length);
                           }}
                         >
                           <MenuItem value={0}>None</MenuItem>
-                          {serviceData.map((service) => (
-                            <MenuItem value={service.id} key={service.id}>
+                          {serviceData.map((service, indexId) => (
+                            <MenuItem value={service.id} key={indexId}>
                               {service.title}
                             </MenuItem>
                           ))}
@@ -635,7 +646,7 @@ console.log(data.length);
                     onChange={(e) => setimage(e.target.files[0])}
                   />
                   {/* <Texteditor setDescription={setDescription} /> */}
-                  <TextEditor_Manage_page setDescription={setDescription} />
+                  <TextEditorManagepage setDescription={setDescription} />
 
                   <FormControl component="fieldset">
                     {/* <FormLabel component="legend">Gender</FormLabel>  */}
@@ -667,7 +678,8 @@ console.log(data.length);
                       </InputLabel>
                       <Select
                         labelId="demo-simple-select-helper-label"
-                        id="demo-simple-select-helper"
+                        id="demo-simple-select-helper2"
+                        name="demo-simple-select-helper2"
                         value={parentMenu}
                         label="Select ParentMenu"
                         onChange={(e) => {
@@ -677,8 +689,8 @@ console.log(data.length);
                         <MenuItem value="0">
                           <em>None</em>
                         </MenuItem>
-                        {menuData.map((item) => (
-                          <MenuItem value={item.id} key={item.id}>
+                        {menuData.map((item, indexId) => (
+                          <MenuItem value={item.id} key={indexId}>
                             {item.title}
                           </MenuItem>
                         ))}
@@ -694,7 +706,8 @@ console.log(data.length);
                       </InputLabel>
                       <Select
                         labelId="demo-simple-select-helper-label"
-                        id="demo-simple-select-helper"
+                        id="demo-simple-select-helper3"
+                        name="demo-simple-select-helper3"
                         value={parentService}
                         label="Select Parent Service"
                         onChange={(e) => {
@@ -702,8 +715,8 @@ console.log(data.length);
                         }}
                       >
                         <MenuItem value={0}>None</MenuItem>
-                        {serviceData.map((service) => (
-                          <MenuItem value={service.id} key={service.id}>
+                        {serviceData.map((service, indexId) => (
+                          <MenuItem value={service.id} key={indexId}>
                             {service.title}
                           </MenuItem>
                         ))}
@@ -777,159 +790,104 @@ console.log(data.length);
       </div>
 
       {/* {data.map((curItem, i) => <p>{ curItem }</p> )} */}
-
-      {data.length > 0 ? (
-        <div>
-          <div>
-            <div className="main">
-              <Paper
-                sx={{
-                  // top: "4rem",
-                  height: "28rem",
-                  // width: "80.4%",
-                  padding: "6rem",
-                  overflow: "hidden",
-                  padding: "3.5rem",
-                  // left: "25rem",
-                }}
-              >
-                <TableContainer sx={{ maxHeight: 440 }}>
-                  <Table stickyHeader aria-label="sticky table">
-                    <TableHead>
-                      <TableRow>
-                        {columns.map((column) => (
-                          <TableCell
-                            key={column.id}
-                            align={column.align}
-                            style={{ minWidth: column.minWidth }}
+      {
+        data.length > 0 ? (
+          <div className="main">
+            <Paper
+              sx={{
+                // top: "4rem",
+                height: "28rem",
+                // width: "80.4%",
+                padding: "3rem",
+                overflow: "hidden",
+                // padding: "3.5rem",
+                // left: "25rem",
+              }}
+            >
+              <TableContainer sx={{ maxHeight: 440 }}>
+                <Table stickyHeader aria-label="sticky table">
+                  <TableHead>
+                    <TableRow>
+                      {columns.map((column) => (
+                        <TableCell
+                          key={column.id}
+                          align={column.align}
+                          style={{ minWidth: column.minWidth }}
+                        >
+                          {column.label}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {data
+                      .slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                      .map((row) => {
+                        return (
+                          <TableRow
+                            hover
+                            role="checkbox"
+                            tabIndex={-1}
+                            key={row.id}
                           >
-                            {column.label}
-                          </TableCell>
-                        ))}
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {data
-                        .slice(
-                          page * rowsPerPage,
-                          page * rowsPerPage + rowsPerPage
-                        )
-                        .map((row) => {
-                          return (
-                            <TableRow
-                              hover
-                              role="checkbox"
-                              tabIndex={-1}
-                              key={row.id}
-                            >
-                              {console.log(data)}
-                              {/* {columns.map((column) => {
+                            {console.log(data)}
+                            {/* {columns.map((column) => {
                           const value = row[column.id]; */}
 
-                              <>
-                                <TableCell key={row.id}>{row.title}</TableCell>
+                            <>
+                              <TableCell >{row.title}</TableCell>
 
-                                <TableCell>{row.slug}</TableCell>
-                                <TableCell>{row.image}</TableCell>
-                                <TableCell>{row.description}</TableCell>
-                                <TableCell key={row.id} align="right">
-                                  <EditIcon
-                                    style={{
-                                      color: "blue",
-                                      marginRight: "20px",
-                                      cursor: "pointer",
-                                    }}
-                                    onClick={() => editHandler(row.id)}
-                                  />
+                              <TableCell>{row.slug}</TableCell>
+                              <TableCell>{row.image}</TableCell>
+                              <TableCell>{row.description}</TableCell>
+                              <TableCell align="right">
+                                <EditIcon
+                                  style={{
+                                    color: "blue",
+                                    marginRight: "20px",
+                                    cursor: "pointer",
+                                  }}
+                                  onClick={() => editHandler(row.id)}
+                                />
 
-                                  <DeleteIcon
-                                    style={{ color: "red", cursor: "pointer" }}
-                                    onClick={() => {
-                                      setDeletePage(row);
-                                      setdeletePagePopup(true);
-                                    }}
-                                  />
-                                </TableCell>
-                              </>
+                                <DeleteIcon
+                                  style={{ color: "red", cursor: "pointer" }}
+                                  onClick={() => {
+                                    setDeletePage(row);
+                                    setdeletePagePopup(true);
+                                  }}
+                                />
+                              </TableCell>
+                            </>
 
-                              {/* })} */}
-                            </TableRow>
-                          );
-                        })}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-                <TablePagination
-                  rowsPerPageOptions={[10, 25, 100]}
-                  component="div"
-                  count={data.length}
-                  rowsPerPage={rowsPerPage}
-                  page={page}
-                  onPageChange={handleChangePage}
-                  onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-              </Paper>
-            </div>
+                            {/* })} */}
+                          </TableRow>
+                        );
+                      })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <TablePagination
+                rowsPerPageOptions={[10, 25, 100]}
+                component="div"
+                count={data.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </Paper>
           </div>
-        </div>
-      ) : (
-        <>
-          <h1>No Page Found!!!</h1> <p>Plz Page Menu..!!</p>
-        </>
-      )}
-      <>
-        <div style={{ paddingBottom: "0rem", display: "none" }}>
-          <div style={style}>
-            <TableContainer
-              component={Paper}
-              style={{ overflowY: "auto", width: "100%", minHeight: "3rem" }}
-            >
-              <Table sx={{ maxWidth: 710 }} aria-label="customized table">
-                <TableHead>
-                  <TableRow>
-                    <StyledTableCell>Title</StyledTableCell>
-                    <StyledTableCell>Slug</StyledTableCell>
-                    <StyledTableCell>Image</StyledTableCell>
-                    <StyledTableCell>Description</StyledTableCell>
-                    <StyledTableCell>Action</StyledTableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {data.map((row) => (
-                    <StyledTableRow key={row.id}>
-                      <StyledTableCell align="left">
-                        {row.title}
-                      </StyledTableCell>
-                      <StyledTableCell align="left">{row.slug}</StyledTableCell>
-                      <StyledTableCell align="left">
-                        {row.image}
-                      </StyledTableCell>
-                      <StyledTableCell align="left">
-                        {row.description}
-                      </StyledTableCell>
-                      <EditIcon
-                        style={{
-                          color: "blue",
-                          marginRight: "20px",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => editHandler(row.id)}
-                      />
-                      <DeleteIcon
-                        style={{ color: "red", cursor: "pointer" }}
-                        onClick={() => {
-                          setDeletePage(row);
-                          setdeletePagePopup(true);
-                        }}
-                      />
-                    </StyledTableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </div>
-        </div>
-      </>
+        ) : (
+          <>
+            <h1>No Page Found!!!</h1> <p>Plz Page Menu..!!</p>
+          </>
+        )
+      }
+
     </>
   );
 };

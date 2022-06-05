@@ -1,60 +1,15 @@
 import React, { useEffect, useState } from "react";
 import "./CSS/ManagePages.css";
-import Tabs from "@mui/material/Tabs";
-import { Tab, TablePagination } from "@mui/material";
-import Table from "@mui/material/Table";
 import { styled } from "@mui/material/styles";
-import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import axios from "axios";
 
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
-
-import Button from "@mui/material/Button";
 import ButtonUnstyled, {
   buttonUnstyledClasses,
 } from "@mui/base/ButtonUnstyled";
 import { TableComponent } from "../TableComponent";
 
-const style = {
-  position: "absolute",
-  top: "42%",
-  left: "54%",
-  // transform: "translate(-50%, -50%)",
-  width: 830,
-  height: 500,
-  bgcolor: "background.paper",
-  // overflowY: "auto",
-  border: "2px solid #000",
-  marginTop: "10rem",
-  p: 1,
-  boxShadow: 24,
-};
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  // hide last border
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-}));
 
 const blue = {
   500: "#007FFF",
@@ -144,36 +99,19 @@ const columns = [
   },
 ];
 
-function createData(name, code, population, size) {
-  const density = population / size;
-  return { name, code, population, size, density };
-}
 
 export const ManageAppointment = () => {
   const [appointmentData, setappointmentData] = useState([]);
-  const [status, setstatus] = useState("pending");
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
 
   // appontment/reject
 
 
 
-  const datehandle = (data) => {
-    let theDate = new Date(Date.parse(data.date));
-    return theDate.toLocaleDateString();
-  };
-
+ 
   function CustomButton(props) {
     return <ButtonUnstyled {...props} component={CustomButtonRoot} />;
   }
@@ -212,21 +150,17 @@ export const ManageAppointment = () => {
   //   }
   // };
 
-  const statusHandler = (value) => {
-    switch (value) {
-      case "0":
-        return "Rejected";
 
-      case "1":
-        return "Approved";
+  const allAppointmentHandler = async () => {
 
-      case "2":
-        return "pending";
-
-      default:
-        return "pending";
-    }
-  };
+    const appointmentData = await axios.get(`http://localhost:5000/admin/appontment`)
+    console.log(appointmentData);
+    setappointmentData(appointmentData.data.data)
+    
+  }
+  useEffect(() => {
+    allAppointmentHandler()
+  }, [])
 
   return (
     <>
@@ -234,13 +168,12 @@ export const ManageAppointment = () => {
 
       <TableComponent
         columns={columns}
-        // data={appointmentData}
+        data={appointmentData}
         page={page}
         rowsPerPage={rowsPerPage}
         CustomButton={CustomButton}
         setPage={setPage}
         setRowsPerPage={setRowsPerPage}
-        setstatus={setstatus}
         // status={status}
 
       />

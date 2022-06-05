@@ -14,7 +14,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(upload.single("image"))
 // app.use(upload.single("imageUrl"))
 // inside public directory.
-// console.log("----------path-=", path.join(__dirname, "upload/images"));
+//  const pathUrl = path.join(__dirname, "upload/images")
+// srcdd = `${pathUrl}/HJB_5905.JPG`
+// console.log('-----------------------------', pathUrl);
 
 app.use(express.static(path.join(__dirname, "upload/images")));
 // app.use('/upload/images', express.static('images'))

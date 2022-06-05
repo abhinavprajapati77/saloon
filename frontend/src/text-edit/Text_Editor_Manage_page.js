@@ -14,7 +14,7 @@ import { stateToHTML } from "draft-js-export-html";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "./ManagePage.css";
 
-export const TextEditor_Manage_page = ({
+export const TextEditorManagepage = ({
   setDescription,
   description,
   update,

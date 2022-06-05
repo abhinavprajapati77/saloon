@@ -2,8 +2,16 @@ const Manage_Service = require("../Model/manage_services");
 
 exports.manageService = async (req, res) => {
   // console.log("manage service here");
-  const { title, short_description, long_description, parent_id } = req.body;
-  let imageUrl = req.file.originalname;
+  const { title, short_description, long_description, parent_id, chr_delete } = req.body;
+  // let imageUrl = req.file.originalname;
+  let imageUrl;
+  if (!req.file) {
+    return res
+      .status(401)
+      .json({ status: false, message: "Plz Select the Image!!!" });
+  }
+  console.log("------------________________", req.file );
+  imageUrl = req.file.filename;
   //   console.log("req.file in post api -->>", req.file);
   if (!title || !short_description || !long_description) {
     res.status(500).json({
@@ -26,8 +34,9 @@ exports.manageService = async (req, res) => {
       long_description,
       parent_id,
       imageUrl,
+      chr_delete
     });
-    // console.log(result_Serivice);
+    console.log("--------------------------",result_Serivice);
     res.status(200).json({
       status: true,
       message: "Added Service Successfully",
@@ -47,7 +56,7 @@ exports.manageService = async (req, res) => {
 exports.allService = async (req, res, next) => {
     try {
       const allServices = await Manage_Service.findAll({ where: { chr_delete: 0 } });
-  
+      console.log(allServices);
       return res.status(201).json({
         status: true,
         message: "Get ALl Services Fetched Successfully",
@@ -62,8 +71,6 @@ exports.allService = async (req, res, next) => {
       });
     }
   };
-
-
 // title, short_description, long_description,  imageUrl });
 exports.updateService = async (req, res) => {
 
@@ -75,7 +82,7 @@ exports.updateService = async (req, res) => {
         {
           title: title,
           short_description: short_description,
-          imageUrl: imageUrl.originalname,
+          imageUrl: imageUrl.filename,
           long_description: long_description,
         },
         { where: { id: req.params.id } }

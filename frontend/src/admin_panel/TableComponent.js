@@ -1,17 +1,14 @@
-import { Paper, TablePagination } from "@mui/material";
+import {  Paper, TablePagination } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Table from "@mui/material/Table";
-import { styled } from "@mui/material/styles";
 import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import axios from "axios";
-// import Paper from "@mui/material/Paper";
-
 export const TableComponent = ({
   columns,
   page,
@@ -20,27 +17,20 @@ export const TableComponent = ({
   setPage,
   setRowsPerPage,
 }) => {
-  const [status, setstatus] = useState("");
+  const [status, setstatus] = useState(2);
   const [data, setdata] = useState([]);
 
-  // const [page, setPage] = useState(0);
+  const allAppointmentHandler = async () => {
 
-  const getAppointment = async () => {
+    const appointmentData = await axios.get(`http://localhost:5000/admin/appontment`)
+    console.log(appointmentData);
+    setdata(appointmentData.data.data)
+    setstatus(2)
+
   }
-  
-  useEffect( async () => {
-    // getAppointment();
-    let allAppointment = await axios.get(
-      "http://localhost:5000/admin/appontment"
-    );
-    console.log(allAppointment);
-    setdata(allAppointment.data.data);
-    setstatus("2")
-    return allAppointment;
-   
-    // handleApproved();
-    // handleRejected();
-  }, [status]);
+  useEffect(() => {
+    allAppointmentHandler()
+  }, [status])
 
 
   const datehandle = (data) => {
@@ -58,10 +48,10 @@ export const TableComponent = ({
 
   const handleApproved = async (data) => {
     try {
-          let result = await axios.put(
+      let result = await axios.put(
         `http://localhost:5000/admin/appontment/aprooved/${data.id}`
       );
-      setstatus("1");
+      setstatus(1);
       // handleApproved()
       return result;
     } catch (error) {
@@ -75,34 +65,13 @@ export const TableComponent = ({
       let rejectedData = await axios.put(
         `http://localhost:5000/admin/appontment/reject/${data.id}`
       );
-      setstatus("0");
+      setstatus(0);
       return rejectedData;
-      
+
     } catch (error) {
       console.log(error);
     }
   };
-
-  const statusHandler = (value) => {
-    switch (value) {
-      case "0":
-        return "Rejected";
-
-      case "1":
-        return "Approved";
-
-      case "2":
-        return "pending";
-
-      default:
-        return "pending";
-    }
-  };
-
-
-  console.log(status);
-
-
 
   return (
     <div>
@@ -141,7 +110,7 @@ export const TableComponent = ({
                         tabIndex={-1}
                         key={row.id}
                       >
-                        {/* {console.log(row)} */}
+                        {console.log(row)}
                         {/* {columns.map((column) => {
                           const value = row[column.id]; */}
 
@@ -158,7 +127,8 @@ export const TableComponent = ({
                           <TableCell align="right"> {row.remark} </TableCell>
                           {/* <TableCell align="right"  >   {row.status} </TableCell> */}
                           {/* <TableCell> */}
-                          {row.status === "2" && (
+
+                          {row.status == 2 && (
                             <TableCell align="right">
                               <CustomButton
                                 disabled
@@ -171,7 +141,7 @@ export const TableComponent = ({
                               </CustomButton>
                             </TableCell>
                           )}
-                          {row.status === "1" && (
+                          {row.status === 1 && (
                             <TableCell align="right">
                               <CustomButton
                                 disabled
@@ -184,7 +154,7 @@ export const TableComponent = ({
                               </CustomButton>
                             </TableCell>
                           )}
-                          {row.status === "0" && (
+                          {row.status == 0 && (
                             <TableCell align="right">
                               <CustomButton
                                 disabled
@@ -196,7 +166,7 @@ export const TableComponent = ({
                               {/* <Button variant="outlined" disabled style={{background: "red", color:"white"}}> Rejected</Button> */}
                             </TableCell>
                           )}
-                          {row.status === "2" ? (
+                          {row.status == 2 ? (
                             <TableCell align="right">
                               <CheckCircleIcon
                                 style={{
@@ -219,10 +189,11 @@ export const TableComponent = ({
                             <TableCell align="right"> NA</TableCell>
                           )}
                           {/* </TableCell> */}
-                          {/* <TableCell  >   {row.action} </TableCell> */}
                         </>
 
                         {/* })} */}
+                        {/* <TableCell>{() => statusHandler}</TableCell> */}
+                        {/* <TableCell  > <div style={{ color: "green", cursor: "pointer" }}> <CheckCircleIcon /> </div> <div style={{ color: "red", cursor: "pointer" }}> <CancelRoundedIcon /> </div> </TableCell> */}
                       </TableRow>
                     );
                   })}

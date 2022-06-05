@@ -1,27 +1,16 @@
 import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 // import { NavBar } from "./admin_panel/navbar";
-import { Dashboard } from "./admin_panel/Pages/Dashboard";
-import { ManageMenu } from "./admin_panel/Pages/ManageMenu";
 import { Navigate } from "react-router";
 // import { Dashboard } from "./admin_panel/Pages/Dashboard";
-import { SideBar } from "./admin_panel/Sidebar";
 import { Login } from "./components/Login";
-import { ManagePages } from "./admin_panel/Pages/ManagePages";
 import { ToastContainer } from "react-toastify";
 import { Home } from "./Client-Frontend/Home";
-import { DEMO, Demo } from "./Client-Frontend/DEMO";
-import { Demoss } from "./Client-Frontend/Demos";
 import { NavBar } from "./Client-Frontend/NavBar";
-import { Pages } from "./Client-Frontend/Pages";
 import { Admin_Routes } from "./admin_panel/Admin_Routes";
-import { Frontend_Route } from "./Client-Frontend/Frontend_Route";
 import { GetAppointment } from "./Client-Frontend/GetAppointment";
-import { Dynamic_Routes } from "./Client-Frontend/Dynamic_Routes";
 
 import axios from "axios";
-import { useNavigate } from "react-router";
-import { HomeNav } from "./Client-Frontend/DynamicPages/Home";
 import { About } from "./Client-Frontend/DynamicPages/About";
 
 function App({ routesDynamicNav }) {
@@ -35,13 +24,16 @@ function App({ routesDynamicNav }) {
   const [subMenu, setsubMenu] = useState(false);
   const [subPages, setsubPages] = useState([]);
   const [childMenu, setchildMenu] = useState([]);
-
-  useEffect(async () => {
+  const allDataHandler = async () => {
     let allMenu = await axios.get("http://localhost:5000/admin/allmenu");
     setmenuData(allMenu.data.data);
     let allPages = await axios.get("http://localhost:5000/admin/allpages");
     setpages(allPages.data.data);
 
+  }
+
+  useEffect(() => {
+    allDataHandler()
     // return allMenu;
   }, []);
 
@@ -126,7 +118,7 @@ function App({ routesDynamicNav }) {
             <Route
               path="/home"
               element={
-               <NavBar />
+                <NavBar />
               }
             />
             <Route path="/about/:slug" element={<About />} />

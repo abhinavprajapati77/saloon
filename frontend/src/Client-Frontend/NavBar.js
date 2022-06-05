@@ -15,9 +15,6 @@ import IconButton from "@mui/material/IconButton";
 import { Route, Routes } from "react-router-dom";
 import MenuItem from "@mui/material/MenuItem";
 
-import MenuIcon from "@mui/icons-material/Menu";
-import Avatar from "@mui/material/Avatar";
-import Tooltip from "@mui/material/Tooltip";
 
 import axios from "axios";
 import { useNavigate } from "react-router";
@@ -68,7 +65,7 @@ export const NavBar = ({ setAdmin, setIsLoggedIn, isLoggedIn }) => {
   const [menuData, setmenuData] = useState([]);
   const [childMenu, setchildMenu] = useState([]);
   const [pages, setpages] = useState([]);
-
+  const [chr_delete, setChr_delete] = useState(0)
   const [subMenu, setsubMenu] = useState(false);
   const [subPages, setsubPages] = useState([]);
 
@@ -120,6 +117,7 @@ date, time, remark, status[requested, confirmed, rejected] */
           date,
           time,
           remark,
+          chr_delete
         }
       );
       setappointmentData(result.data);
@@ -171,7 +169,7 @@ date, time, remark, status[requested, confirmed, rejected] */
 
   const handleChooseSubMenu = (menuDataa) => {
     // console.log(id);
-    
+
     console.log(menuDataa);
     // routesNav(menuDataa);
     setsubMenu(true);
@@ -201,12 +199,16 @@ date, time, remark, status[requested, confirmed, rejected] */
     setsubPages(pageDesc);
   };
 
-  useEffect(async () => {
+  const allDataHandler = async () => {
+
     let allMenu = await axios.get("http://localhost:5000/admin/allmenu");
     setmenuData(allMenu.data.data);
     let allPages = await axios.get("http://localhost:5000/admin/allpages");
     setpages(allPages.data.data);
+  }
 
+  useEffect( () => {
+    allDataHandler()
     // return allMenu;
   }, []);
 

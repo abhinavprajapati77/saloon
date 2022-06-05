@@ -14,7 +14,6 @@ const storage = multer.diskStorage({
     );
   },
 });
-// console.log("--------storage", storage());
 
 
 const filefilter = (req, res, cb) => {
