@@ -34,7 +34,7 @@ router.use(function (req, res, next) {
 // app.use(bodyParser);
 app.use(router);
 
-const PORT = 5000;
+const PORT =  process.env.PORT ||5000;
 
 // app.use(require("./Router/router"));
 
